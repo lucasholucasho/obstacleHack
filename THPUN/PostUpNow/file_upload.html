@@ -3,7 +3,7 @@
 <html>
   <!-- [START head_html] -->
   <head>
-        <title>Post Up Now</title>
+        <title>SAM</title>
     <link rel="icon" 
           type="image/png" 
           href="/static/miniLogo.png">
@@ -16,12 +16,9 @@
     <!--<a href="{{ url|safe }}">{{ url_linktext }}</a>-->
     <div id="wrap" class="navbar navbar-inverse"; style="background-color:white">
       <div class="navbar-inner"; style="background-color:white; border-top-width: 10px">
-        <img src="/static/headerOld.png"; style="padding-top: 20px;">
         <div class="container">
             <ul class="nav" style="clear:both; float:right; width:500px">
              <li><a href="/"; style="color:black; font-size:200%">map</a></li>
-             <li><a href="about"; style="color:black; font-size:200%">about</a></li>
-             <li><a href="contact"; style="color:black; font-size:200% ">contact</a></li>
              {% if authenticated %}
                 <li><a href="file_upload"; style="color:black; font-size:200%; border-bottom-width: 1px;  border-bottom-style: solid; border-bottom-width: 2px">upload</a></li>
              {% endif %}
