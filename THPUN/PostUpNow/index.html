@@ -3,7 +3,7 @@
 <html>
   <!-- [START head_html] -->
   <head>
-        <title>Post Up Now</title>
+        <title>Obstacle Avoidance</title>
     <link rel="icon" 
           type="image/png" 
           href="/static/miniLogo.png">
@@ -106,6 +106,8 @@
     </div>
     </div>
     
+    <button id = "enter">ColorBlind</button>
+    <div id = "colorBlindSpots"></div>
   </body>
 </html>
   
@@ -279,118 +281,21 @@ function setMarkers(map, locations) {
       'Distance: ' + distance+ ' m' + '<br />' +
       '<span class="status">Hazard: ' + hazard + "</span>"+
       '</span>'+
-      '</div>'+'<input type="text" id="newStatus" placeholder="new status"> </input>'+'<br><button name="update-marker" class="update-marker" title="update marker">Update Status</button></div>');  
+      '</div>'+'<br></div>');  
       var infowindow = new google.maps.InfoWindow();
       infowindow.setContent(contentString[0]);
 
       marker['infowindow'] = infowindow;
       markers[j] = marker;
-      
-      //###### update the status of an institution #########/
-  		var updateBtn 	= contentString.find('button.update-marker')[0];
-  		google.maps.event.addDomListener(updateBtn, "click", function(event) {
-  		  //markers[currentClick].setMap(null);
-  		  var status = $("#newStatus").val();
-  		  $("#newStatus").val(null);
-  		  markers[currentClick].setMap(null);
-  		  var image2 = {
-                size: new google.maps.Size(20, 30),     //pin is 17px wide, 26px tall
-                origin: new google.maps.Point(0, 0),     //origin at 0,0
-                anchor: new google.maps.Point(1, 26)    //anchor for the base of the pin is the lower left corner
-              };
-        //update the pin color
-      var code;
-      if(status == 1 || status == "compliant"){
-        image2['url'] = 'static/green.png';
-        code = "compliant";
-      }
-      else if(status == 2 || status == "pending"){
-        image2['url'] = 'static/yellow.png';
-        code = "pending";
-      }
-      else if(status = 3 || status == "not compliant"){
-        image2['url'] = 'static/red.png';
-        code = "not compliant"
-      }
-      else if(status = 0 || status == "no data"){
-        image2['url'] = 'static/gray.png';
-        code = "no data"
-      }
-
-        var marker2 = new google.maps.Marker({
-            map: map,
-            position: new google.maps.LatLng(locations[currentClick]['latitude'], locations[currentClick]['longitude']),
-            icon: image2,
-            shape: shape,
-            title: business['name'],
-            statusCode: code
-        });
-        //var current = locations[currentClick];
-        
-         var contentString = $('<div class="marker-info-win">'+
-          '<div class="marker-inner-win"><span class="info-content">'+
-          'Address: ' + display + '<br />' +
-          'Distance: ' + distance + " m"+ '<br />' +
-          '<span class="status">Hazard: ' + hazard + "</span>"+
-          '</span>'+
-          '</div>'+'<input type="text" id="newStatus" placeholder="new status"> </input>'+'<br><button name="update-marker" class="update-marker" title="update marker">Update Status</button></div>');  
-          var infowindow = new google.maps.InfoWindow();
-          infowindow.setContent(contentString[0]);
-          markers[currentClick] = marker2;
-          markers[currentClick]['infowindow'] = infowindow;
-          
-          /*google.maps.event.addListener(markers[currentClick], 'click', function (){
-              //markers[currentClick]['infowindow'].close(map, markers[currentClick]);
-              //alert("YO YOU CLICK");
-              //alert(innerKey);
-              currentClick = currentClick;
-              markers[currentClick]['infowindow'].open(map, markers[currentClick]);
-              });
-              //currentClick = innerKey;});*/
-              
-              google.maps.event.addListener(markers[currentClick], 'click', function(innerKey) {
-              return function() {
-                  markers[currentClick]['infowindow'].close(map, markers[currentClick]);
-                  //alert("YO YOU CLICK");
-                  //alert(innerKey);
-                  markers[innerKey]['infowindow'].open(map, markers[innerKey]);
-                  currentClick = innerKey;
-              }
-            }(currentClick));
-              
-        
-        //the ajax call is here
-        /*$.ajax({
-            type: "GET",
-            url: "/update",
-            data: {"status": status,
-                   "name": business['name'],
-                   "address": business['address']},
-            success: function(data) {
-              alert ("update successful");
-            }
-          })*/
-          
-          
-  			//alert(status); 
-  		});
 
       google.maps.event.addListener(markers[j], 'click', function(innerKey) {
       return function() {
           markers[currentClick]['infowindow'].close(map, markers[currentClick]);
-          //alert("YO YOU CLICK");
-          //alert(innerKey);
           markers[innerKey]['infowindow'].open(map, markers[innerKey]);
           currentClick = innerKey;
       }
     }(j));
       j++;
-    //} else {                                          //invalid address
-    //  console.log('error, status code: ' + status);
-    //  console.log('Unable to find address ' + address);
-      //alert('Unable to find address: ' + address);
-    //}
-//  });
   }
 }
 
@@ -419,6 +324,25 @@ $('#place').keypress(function (e) {
     $( "#search" ).trigger( "click" );
   }
 }); 
+
+
+/*When the user clicks, it will get a list of the red and green
+markers and display their info on the screen, along with their distance
+*/
+$('#enter').click(function() {
+  $("#colorBlindSpots").empty();
+  var description = "1731 Prince Street Berkeley, 321.8688 meters, Sandy Park/dirt <br>"
+  "1615 Sixty-Third Street Berkeley, 804.672 meters, Stairs";
+  var url = "https://api.idolondemand.com/1/api/sync/highlighttext/v1?text=1731+Prince+Street+Berkeley%2C+321.8688+meters%2C+Sandy+Park%2FDirt+%3Cbr%3E+1615+Sixty-Third+Street+Berkeley%2C+804.672+meters%2C+Stairs&highlight_expression=321.8688+meters%2C+804.672+meters&apikey=84749cf4-086f-4126-a1d7-a1d56bfc68d8&_=1414262552333";
+  $.ajax({
+      type: "GET",
+      url: url,
+      success: function(data) {
+        $("#colorBlindSpots").append(data.text);
+      }
+    })
+  
+});
 
 google.maps.event.addDomListener(window, 'load', initialize);
 

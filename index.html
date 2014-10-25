@@ -279,7 +279,7 @@ function setMarkers(map, locations) {
       'Distance: ' + distance+ ' m' + '<br />' +
       '<span class="status">Hazard: ' + hazard + "</span>"+
       '</span>'+
-      '</div>'+'<input type="text" id="newStatus" placeholder="new status"> </input>'+'<br><button name="update-marker" class="update-marker" title="update marker">Update Status</button></div>');  
+      '</div>'+'<br>');  
       var infowindow = new google.maps.InfoWindow();
       infowindow.setContent(contentString[0]);
 
@@ -333,7 +333,7 @@ function setMarkers(map, locations) {
           'Distance: ' + distance + " m"+ '<br />' +
           '<span class="status">Hazard: ' + hazard + "</span>"+
           '</span>'+
-          '</div>'+'<input type="text" id="newStatus" placeholder="new status"> </input>'+'<br><button name="update-marker" class="update-marker" title="update marker">Update Status</button></div>');  
+          '</div>');  
           var infowindow = new google.maps.InfoWindow();
           infowindow.setContent(contentString[0]);
           markers[currentClick] = marker2;
